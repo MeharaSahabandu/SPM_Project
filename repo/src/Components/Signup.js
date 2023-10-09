@@ -10,19 +10,21 @@ export const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [contactNumber, setContactNumber] = useState('');
+  const [address, setAddress] = useState('');
 
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
   const handleSignup = (e) => {
     e.preventDefault();
-
-    // Check if contactNumber is provided
     if (!contactNumber) {
       setErrorMsg('Please enter a Contact Number.');
       return;
     }
-
+    if(!address){
+        setErrorMsg('Please enter your address');
+        return
+    }
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((credentials) => {
@@ -32,7 +34,8 @@ export const Signup = () => {
             FullName: fullName,
             Email: email,
             Password: password,
-            ContactNumber: contactNumber, // Save contactNumber to Firestore
+            ContactNumber: contactNumber,
+            Address:address,
           })
           .then(() => {
             setSuccessMsg(
@@ -42,6 +45,7 @@ export const Signup = () => {
             setEmail('');
             setPassword('');
             setContactNumber('');
+            setAddress('');
             setErrorMsg('');
             setTimeout(() => {
               setSuccessMsg('');
@@ -102,6 +106,15 @@ export const Signup = () => {
           required
           onChange={(e) => setContactNumber(e.target.value)}
           value={contactNumber}
+        ></input>
+        <br></br>
+        <label>Address</label>
+        <input
+          type='text'
+          className='form-control'
+          required
+          onChange={(e) => setAddress(e.target.value)}
+          value={address}
         ></input>
         <br></br>
         <div className='btn-box'>
